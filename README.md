@@ -15,11 +15,11 @@ Your first goal is to create a deterministic, reproducible environment. This is 
 2.  **Create a local virtual environment:** 
     ```bash
     python -m venv .venv
-    source .venv/bin/activate  # (or .\.venv\Scripts\activate on Windows)
+    source .venv/bin/activate  # (or ./.venv/Scripts/activate on Windows)
     ```
     *Note: The `.gitignore` file is already configured to ignore this `.venv` directory.* 
 
-3.  **Install `pip-tools`:**
+3.  **Install `pip-tools` (might need admin privileges):**
     ```bash
     pip install pip-tools
     ```
@@ -29,7 +29,7 @@ Your first goal is to create a deterministic, reproducible environment. This is 
     pip-compile --generate-hashes pyproject.toml -o requirements.txt
     ```
 
-5.  **Sync your environment:** Use `pip-sync` to install the *exact* versions from your new lock file.
+5.  **Sync your environment:** Use `pip-sync` to install the *exact* versions from your new lock file (might need admin privileges).
     ```bash
     pip-sync requirements.txt
     ```
