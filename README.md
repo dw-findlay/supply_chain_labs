@@ -8,8 +8,8 @@ Your first goal is to create a deterministic, reproducible environment. This is 
 
 1.  **Clone this repository:**
     ```bash
-    git clone [repository-url]
-    cd [repository-folder]
+    git clone https://github.com/dw-findlay/supply_chain_labs.git
+    cd ./supply_chain_labs
     ```
 
 2.  **Create a local virtual environment:** 
