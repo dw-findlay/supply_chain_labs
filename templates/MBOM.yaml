@@ -1,0 +1,17 @@
+version: 0.1
+pipelines:
+  - name: <name of your pipeline, e.g., tiny-classifier>
+    datasets:
+      - name: <dataset name, e.g., curated_reviews>
+        path: <path to data, e.g., data/reviews.csv>
+        sha256: <hash of dataset>
+        license: <dataset license>
+        intended_use: <scope of use, e.g., course demo only>
+    models:
+      - name: <model name, e.g., logistic_regression>
+        path: <path to artifact, e.g., models/model.pkl>
+        sha256: <hash of model artifact>
+        training_data: <name of dataset used>
+        metrics:
+          accuracy: <value, e.g., 0.86>
+        caveats: <notes, e.g., small dataset; not for deployment>

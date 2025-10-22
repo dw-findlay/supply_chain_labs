@@ -1,0 +1,60 @@
+name: Supply Chain Security Checks
+
+on: [push, pull_request]
+
+jobs:
+  deps-and-sbom:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Install CI tools
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install pip-tools cyclonedx-bom pip-audit
+
+      # --- HOMEWORK: STUDENTS MUST UNCOMMENT AND CONFIGURE ---
+      # This section is for enforcing a private-only index 
+      # - name: Enforce private index only
+      #   run: |
+      #     echo "[global]" > pip.conf
+      #     echo "index-url = ${{ secrets.PRIVATE_INDEX }}" >> pip.conf
+      #     echo "no-index = true" >> pip.conf # (Or 'extra-index-url = ' for dependency confusion drill)
+      #     echo "require-virtualenv = true" >> pip.conf
+      #     echo "---"
+      #     echo "Generated pip.conf:"
+      #     cat pip.conf
+      #     echo "---"
+
+      - name: Sync dependencies
+        run: |
+          source .venv/bin/activate
+          # The '--require-hashes' flag is a key mitigation
+          pip-sync requirements.txt --require-hashes
+
+      - name: Generate SBOM
+        run: |
+          source .venv/bin/activate
+          cyclonedx-py --format json > sbom.json
+          echo "SBOM generated: sbom.json"
+
+      - name: Audit dependencies
+        run: |
+          source .venv/bin/activate
+          # We use '--strict' to fail the build if vulnerabilities are found
+          # '|| true' is used to prevent the job from stopping
+          # (Students will remove '|| true' to enforce the gate)
+          pip-audit -r requirements.txt --strict || true
+          
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: sbom.json
