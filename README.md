@@ -15,13 +15,13 @@ Your first goal is to create a deterministic, reproducible environment. This is 
 2.  **Create a local virtual environment:** 
     ```bash
     python -m venv .venv
-    source .venv/bin/activate  # (or ./.venv/Scripts/activate on Windows)
+    .\.venv\Scripts\activate # assuming Windows Command Prompt  (otherwise source .venv/bin/activate)
     ```
     *Note: The `.gitignore` file is already configured to ignore this `.venv` directory.* 
 
-3.  **Install `pip-tools` (might need admin privileges):**
+3.  **Install `pip-tools`, `cyclonedx-bom`, and  `pip-audit`:**
     ```bash
-    pip install pip-tools
+    pip install pip-tools cyclonedx-bom pip-audit
     ```
 
 4.  **Compile your dependencies:** Use `pip-compile` to generate a hash-pinned `requirements.txt` file from the `pyproject.toml`.
@@ -29,7 +29,7 @@ Your first goal is to create a deterministic, reproducible environment. This is 
     pip-compile --generate-hashes pyproject.toml -o requirements.txt
     ```
 
-5.  **Sync your environment:** Use `pip-sync` to install the *exact* versions from your new lock file (might need admin privileges).
+5.  **Sync your environment:** Use `pip-sync` to install the *exact* versions from your new lock file.
     ```bash
     pip-sync requirements.txt
     ```
@@ -40,6 +40,6 @@ Your first goal is to create a deterministic, reproducible environment. This is 
     ```
     If this command produces no output, your environment is consistent and correct.
 
-7.  **Submit your readiness check:** Take a screenshot showing the successful `pip check` command and the presence of your `requirements.txt` file (showing the hashes).
+7.  **Submit your readiness check:** Take a screenshot showing the successful `pip check` command and the contents of your `requirements.txt` file (showing the hashes).
 
-You are now ready for Meeting 1, where we will discuss supply-chain risks and generate our first Software Bill of Materials (SBOM).
+You are now ready for the next meeting, where we will discuss supply-chain risks and generate our first Software Bill of Materials (SBOM).
